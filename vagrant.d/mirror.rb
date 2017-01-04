@@ -10,13 +10,17 @@ if [ ! -f /tmp/up ]; then
 fi
 SCRIPT
 
-LOCAL_UPDATE= <<SCRIPT
+if File.directory?("#{Dir.pwd}/mirror")
+  LOCAL_UPDATE= <<SCRIPT
 if [ ! -f /tmp/up ]; then
-  sudo echo '192.168.121.40 aptmirror' >> /etc/hosts
+  sudo echo '#{MIRROR} aptmirror' >> /etc/hosts
   sudo cp -r /vagrant/mirror/* /etc/apt/  
   sudo apt-get update
   touch /tmp/up
 fi
 SCRIPT
+else
+  LOCAL_UPDATE = nil
+end
 
 
