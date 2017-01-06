@@ -10,18 +10,17 @@ if [ ! -f /tmp/up ]; then
 fi
 SCRIPT
 
-
+LIST_D = '/etc/apt/sources.list.d'
 LOCAL_UPDATE= <<SCRIPT
 if [ ! -f /tmp/up ]; then
   sudo echo '#{MIRROR} aptmirror' >> /etc/hosts
   sudo rm /etc/apt/sources.list
-  sudo echo '' >> /etc/apt/sources.list
-  sudo 'deb http://aptmirror/ubuntu/ xenial-backports main restricted universe multiverse' >> /etc/sources.list.d/xenial-backports.list
-  sudo echo 'deb http://aptmirror/ubuntu/ xenial partner' >> /etc/sources.list.d/xenial-extras.list
-  sudo 'deb http://aptmirror/ubuntu-security/ xenial-security main restricted universe multiverse' >> /etc/sources.list.d/xenial-security.list
-  sudo 'deb http://aptmirror/ubuntu/ xenial-updates main restricted universe multiverse' >> /etc/sources.list.d/xenial-updates.list
-  sudo 'deb http://aptmirror/ubuntu/ xenial main restricted universe multiverse' >> /etc/sources.list.d/xenial.list
-  sudo apt-get update
+  sudo echo 'deb http://aptmirror/ubuntu/ xenial-backports main restricted universe multiverse' >> #{LIST_D}/xenial-backports.list
+  sudo echo 'deb http://aptmirror/ubuntu/ xenial partner' >> #{LIST_D}/xenial-extras.list
+  sudo echo 'deb http://aptmirror/ubuntu-security/ xenial-security main restricted universe multiverse' >> #{LIST_D}/xenial-security.list
+  sudo echo 'deb http://aptmirror/ubuntu/ xenial-updates main restricted universe multiverse' >> #{LIST_D}/xenial-updates.list
+  sudo echo 'deb http://aptmirror/ubuntu/ xenial main restricted universe multiverse' >> #{LIST_D}/xenial.list
+  sudo apt update
   touch /tmp/up
 fi
 SCRIPT
