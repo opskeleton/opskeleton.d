@@ -10,17 +10,18 @@ if [ ! -f /tmp/up ]; then
 fi
 SCRIPT
 
-if File.directory?("#{Dir.pwd}/mirror")
-  LOCAL_UPDATE= <<SCRIPT
+
+LOCAL_UPDATE= <<SCRIPT
 if [ ! -f /tmp/up ]; then
   sudo echo '#{MIRROR} aptmirror' >> /etc/hosts
-  sudo cp -r /vagrant/mirror/* /etc/apt/  
+  sudo rm /etc/apt/sources.list
+  sudo echo '' >> /etc/apt/sources.list
+  sudo 'deb http://aptmirror/ubuntu/ xenial-backports main restricted universe multiverse' >> /etc/sources.list.d/xenial-backports.list
+  sudo echo 'deb http://aptmirror/ubuntu/ xenial partner' >> /etc/sources.list.d/xenial-extras.list
+  sudo 'deb http://aptmirror/ubuntu-security/ xenial-security main restricted universe multiverse' >> /etc/sources.list.d/xenial-security.list
+  sudo 'deb http://aptmirror/ubuntu/ xenial-updates main restricted universe multiverse' >> /etc/sources.list.d/xenial-updates.list
+  sudo 'deb http://aptmirror/ubuntu/ xenial main restricted universe multiverse' >> /etc/sources.list.d/xenial.list
   sudo apt-get update
   touch /tmp/up
 fi
 SCRIPT
-else
-  LOCAL_UPDATE = nil
-end
-
-
