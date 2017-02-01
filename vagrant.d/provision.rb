@@ -4,6 +4,8 @@ env  = ENV['PUPPET_ENV'] || 'dev'
 
 Vagrant.configure("2") do |config|
   config.vm.provision :shell, :inline => LOCAL_UPDATE || UPDATE
+
+  config.vm.provision :shell, :inline => 'sudo apt install apt-transport-https' 
   config.vm.define :default do |node|
     node.vm.provision :puppet do |puppet|
 	puppet.manifests_path = 'manifests'
