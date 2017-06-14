@@ -1,5 +1,5 @@
 
-MIRROR=ENV['MIRROR'] || 'us.archive.ubuntu.com'
+MIRROR=ENV['MIRROR'] || 'au.archive.ubuntu.com'
 
 UPDATE= <<SCRIPT
 if [ ! -f /tmp/up ]; then
@@ -11,7 +11,8 @@ fi
 SCRIPT
 
 LIST_D = '/etc/apt/sources.list.d'
-LOCAL_UPDATE= <<SCRIPT
+unless ENV['NON_LOCAL']
+  LOCAL_UPDATE= <<SCRIPT
 if [ ! -f /tmp/up ]; then
   sudo echo '#{MIRROR} aptmirror' >> /etc/hosts
   sudo rm /etc/apt/sources.list
@@ -24,3 +25,6 @@ if [ ! -f /tmp/up ]; then
   touch /tmp/up
 fi
 SCRIPT
+else
+  LOCAL_UPDATE = nil
+end
